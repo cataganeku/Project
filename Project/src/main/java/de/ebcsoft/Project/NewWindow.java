@@ -3,12 +3,13 @@ package de.ebcsoft.Project;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class NewWindow extends JFrame {
 
     private EnergyReadingData energyReading; // Referencia al objeto EnergyReading
-    public NewWindow(EnergyReadingData energyreading) { //este es el constructor
+    public NewWindow(EnergyReadingData energyReading) { //este es el constructor
         // Configurar la ventana
         super("Ventana Nueva");
         setSize(400, 300);
@@ -31,14 +32,20 @@ public class NewWindow extends JFrame {
         setContentPane(panel);
 
         // Agregar un ActionListener al botón "Submit"
-        button.addActionListener(new ActionListener() {
-            private double energyConsumption;
 
+        button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Obtener el valor del campo de texto y guardarlo en la propiedad energyConsumption
+                // Obtener el valor del campo de texto y guardarlo en el objeto energyReading
                 String text = textField.getText();
-                double value = Double.parseDouble(text);
-                energyReading.setEnergyConsumption(value);
+                try {
+                    double value = Double.parseDouble(text);
+                    energyReading.setEnergyConsumption(value);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(ProjectApplication,
+                            "Bitte geben Sie eine gültige Zahl ein.",
+                            "Ungültiger Wert",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
     }
